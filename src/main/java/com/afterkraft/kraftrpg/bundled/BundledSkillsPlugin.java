@@ -11,6 +11,6 @@ public class BundledSkillsPlugin extends JavaPlugin {
     public void onLoad() {
         RPGPlugin plugin = ExternalProviderRegistration.getPlugin();
 
-        ExternalProviderRegistration.registerSkill("blink", new SkillBlink(plugin, "blink"));
+        ExternalProviderRegistration.registerSkill("harm", new SkillHarm(plugin, "harm"));
     }
 }
