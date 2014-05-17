@@ -2,13 +2,14 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.afterkraft.kraftrpg</groupId>
-    <artifactId>KraftRPG-Skills</artifactId>
+    <artifactId>KraftRPG-Skills-Bundle</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>KraftRPG-Skills</name>
+    <name>KraftRPG Bundled Skills</name>
     <description>Bundled skills included with KraftRPG</description>
     <url>http://git.afterkraft.com/AfterKraft/KraftRPG-Skills</url>
 
     <build>
+        <finalName>KraftRPGBundledSkills</finalName>
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
