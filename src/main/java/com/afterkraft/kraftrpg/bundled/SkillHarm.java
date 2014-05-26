@@ -15,6 +15,8 @@
  */
 package com.afterkraft.kraftrpg.bundled;
 
+import com.afterkraft.kraftrpg.api.skills.SkillSetting;
+import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
@@ -25,6 +27,9 @@ import com.afterkraft.kraftrpg.api.skills.Skill;
 import com.afterkraft.kraftrpg.api.skills.SkillCastResult;
 import com.afterkraft.kraftrpg.api.skills.arguments.EntitySkillArgument;
 
+import java.util.Collection;
+import java.util.EnumSet;
+
 
 public class SkillHarm extends ActiveSkill {
     public SkillHarm(RPGPlugin plugin, String name) {
@@ -33,8 +38,17 @@ public class SkillHarm extends ActiveSkill {
     }
 
     @Override
+    public Collection<SkillSetting> getUsedConfigNodes() {
+        return EnumSet.of(SkillSetting.DAMAGE, SkillSetting.CUSTOM_PER_CHAMPION);
+    }
+
+    @Override
     public SkillCastResult useSkill(SkillCaster caster) {
-        Skill.damageEntity(this.<EntitySkillArgument<LivingEntity>> getArgument(0).getMatchedEntity(), caster, 5.0, DamageCause.MAGIC);
+        LivingEntity target = this.<EntitySkillArgument<LivingEntity>> getArgument(0).getMatchedEntity();
+
+        Skill.damageEntity(target, caster,
+                plugin.getSkillConfigManager().getUseSetting(caster, this, SkillSetting.DAMAGE, 5.0, false),
+                DamageCause.MAGIC);
         return SkillCastResult.NORMAL;
     }
 
