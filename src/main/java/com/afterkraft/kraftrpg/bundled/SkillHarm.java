@@ -32,19 +32,22 @@ import java.util.EnumSet;
 
 
 public class SkillHarm extends ActiveSkill {
-    public SkillHarm(RPGPlugin plugin, String name) {
-        super(plugin, name);
+    public SkillHarm(RPGPlugin plugin) {
+        super(plugin, "Harm");
         setSkillArguments(new EntitySkillArgument<LivingEntity>(10.0, LivingEntity.class, null));
     }
 
     @Override
     public Collection<SkillSetting> getUsedConfigNodes() {
-        return EnumSet.of(SkillSetting.DAMAGE, SkillSetting.CUSTOM_PER_CHAMPION);
+        return EnumSet.of(SkillSetting.DAMAGE, SkillSetting.MAX_DISTANCE);
     }
 
     @Override
     public SkillCastResult useSkill(SkillCaster caster) {
         LivingEntity target = this.<EntitySkillArgument<LivingEntity>> getArgument(0).getMatchedEntity();
+
+        double distance = plugin.getSkillConfigManager().getUseSetting(caster, this, SkillSetting.MAX_DISTANCE, 10.0, true);
+
 
         Skill.damageEntity(target, caster,
                 plugin.getSkillConfigManager().getUseSetting(caster, this, SkillSetting.DAMAGE, 5.0, false),
