@@ -15,8 +15,9 @@
  */
 package com.afterkraft.kraftrpg.bundled;
 
+import com.afterkraft.kraftrpg.api.entity.IEntity;
+import com.afterkraft.kraftrpg.api.entity.PartyMember;
 import com.afterkraft.kraftrpg.api.skills.SkillSetting;
-import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
@@ -47,16 +48,21 @@ public class SkillHarm extends ActiveSkill {
         LivingEntity target = this.<EntitySkillArgument<LivingEntity>> getArgument(0).getMatchedEntity();
 
         double distance = plugin.getSkillConfigManager().getUseSetting(caster, this, SkillSetting.MAX_DISTANCE, 10.0, true);
+        if (target == null || target.getLocation().distance(caster.getLocation()) > distance) {
+            return SkillCastResult.INVALID_TARGET;
+        }
 
+        IEntity apiEntity = plugin.getEntityManager().getEntity(target);
+        if (apiEntity instanceof PartyMember) {
+            if (plugin.getPartyManager().isFriendly(caster, (PartyMember) apiEntity)) {
+                caster.sendMessage(apiEntity.getName() + " is friendly to you! Cannot hurt them.");
+                return SkillCastResult.CUSTOM_NO_MESSAGE_FAILURE;
+            }
+        }
 
         Skill.damageEntity(target, caster,
                 plugin.getSkillConfigManager().getUseSetting(caster, this, SkillSetting.DAMAGE, 5.0, false),
                 DamageCause.MAGIC);
         return SkillCastResult.NORMAL;
-    }
-
-    @Override
-    public boolean grantsExperienceOnCast() {
-        return false;
     }
 }

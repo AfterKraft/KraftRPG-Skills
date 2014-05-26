@@ -41,12 +41,9 @@ public class SkillPlanter extends ActiveSkill implements Listener {
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
-    public Configuration getDefaultConfig() {
-        return super.getDefaultConfig();
-    }
-
     @Override
     public Collection<SkillSetting> getUsedConfigNodes() {
+        // TODO I think this will NPE
         return null;
     }
 
@@ -117,10 +114,5 @@ public class SkillPlanter extends ActiveSkill implements Listener {
         //        broadcastExecuteText(caster); // TODO Implement skill message broadcasting
         return SkillCastResult.NORMAL;
 
-    }
-
-    @Override
-    public boolean grantsExperienceOnCast() {
-        return false;
     }
 }
