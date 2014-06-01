@@ -1,6 +1,6 @@
 name: KraftRPGBundledSkills
 version: 0.1
 main: com.afterkraft.kraftrpg.bundled.BundledSkillsPlugin
-depends: [ KraftRPG ]
+depend: [ KraftRPG ]
 authors: [gabizou, riking]
 description: Skills bundled by default with KraftRPG. You can write your own, too!

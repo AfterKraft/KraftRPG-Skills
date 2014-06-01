@@ -33,12 +33,11 @@ import com.afterkraft.kraftrpg.api.skills.SkillCastResult;
 import com.afterkraft.kraftrpg.api.skills.SkillSetting;
 
 
-public class SkillPlanter extends ActiveSkill implements Listener {
+public class SkillPlanter extends ActiveSkill {
 
     public SkillPlanter(RPGPlugin plugin) {
         super(plugin, "Planter");
         setDescription("Plant the Ground");
-        Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
     @Override
