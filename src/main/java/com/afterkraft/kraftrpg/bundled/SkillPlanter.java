@@ -17,13 +17,10 @@ package com.afterkraft.kraftrpg.bundled;
 
 import java.util.Collection;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.configuration.Configuration;
-import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
 import com.afterkraft.kraftrpg.api.RPGPlugin;
@@ -70,7 +67,7 @@ public class SkillPlanter extends ActiveSkill {
                     final Location locBlock = blockName.getLocation();
                     if (caster.getItemInHand().getType().equals(Material.SEEDS)) {
                         if (caster.getInventory().contains(Material.SEEDS)) {
-                            if (locBlock.getBlock().getType().equals(Material.CROPS) && lowerLoc.getBlock().getType().equals(Material.SOIL)) {
+                            if (locBlock.getBlock().getType().equals(Material.AIR) && lowerLoc.getBlock().getType().equals(Material.SOIL)) {
                                 locBlock.getBlock().setType(Material.CROPS);
                                 caster.getInventory().removeItem(new ItemStack(Material.SEEDS, 1));
                                 caster.updateInventory();
@@ -82,7 +79,7 @@ public class SkillPlanter extends ActiveSkill {
                         }
                     }
                     if (caster.getItemInHand().getType().equals(Material.CARROT_ITEM)) {
-                        if (locBlock.getBlock().getType().equals(Material.CARROT) && lowerLoc.getBlock().getType().equals(Material.SOIL)) {
+                        if (locBlock.getBlock().getType().equals(Material.AIR) && lowerLoc.getBlock().getType().equals(Material.SOIL)) {
                             locBlock.getBlock().setType(Material.CARROT);
                             carrotsPlanted += 1;
                         } else {
@@ -90,7 +87,7 @@ public class SkillPlanter extends ActiveSkill {
                         }
                     }
                     if (caster.getItemInHand().getType().equals(Material.POTATO_ITEM)) {
-                        if ((locBlock.getBlock().getType().equals(Material.POTATO)) && (lowerLoc.getBlock().getType().equals(Material.SOIL))) {
+                        if ((locBlock.getBlock().getType().equals(Material.AIR)) && (lowerLoc.getBlock().getType().equals(Material.SOIL))) {
                             locBlock.getBlock().setType(Material.POTATO);
                             potatoesPlanted += 1;
                         }
