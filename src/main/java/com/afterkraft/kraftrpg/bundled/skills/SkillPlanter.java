@@ -13,9 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.afterkraft.kraftrpg.bundled;
-
-import java.util.Collection;
+package com.afterkraft.kraftrpg.bundled.skills;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -27,7 +25,7 @@ import com.afterkraft.kraftrpg.api.RPGPlugin;
 import com.afterkraft.kraftrpg.api.entity.SkillCaster;
 import com.afterkraft.kraftrpg.api.skills.ActiveSkill;
 import com.afterkraft.kraftrpg.api.skills.SkillCastResult;
-import com.afterkraft.kraftrpg.api.skills.SkillSetting;
+import com.afterkraft.kraftrpg.bundled.CustomSkillSettings;
 
 
 public class SkillPlanter extends ActiveSkill {
@@ -35,16 +33,12 @@ public class SkillPlanter extends ActiveSkill {
     public SkillPlanter(RPGPlugin plugin) {
         super(plugin, "Planter");
         setDescription("Plant the Ground");
+        setDefault(CustomSkillSettings.PLANT_RADIUS, 2);
     }
 
     @Override
-    public Collection<SkillSetting> getUsedConfigNodes() {
-        // TODO I think this will NPE
-        return null;
-    }
-
     public SkillCastResult useSkill(SkillCaster caster) {
-        int radius = 2;
+        int radius = this.plugin.getSkillConfigManager().getUsedIntSetting(caster, this, CustomSkillSettings.PLANT_RADIUS);
         final World world = caster.getWorld();
         final int x = caster.getLocation().getBlockX();
         final int y = caster.getLocation().getBlockY();

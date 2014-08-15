@@ -19,6 +19,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.afterkraft.kraftrpg.api.ExternalProviderRegistration;
 import com.afterkraft.kraftrpg.api.RPGPlugin;
+import com.afterkraft.kraftrpg.bundled.skills.SkillBandage;
+import com.afterkraft.kraftrpg.bundled.skills.SkillHarm;
+import com.afterkraft.kraftrpg.bundled.skills.SkillPlanter;
 
 public class BundledSkillsPlugin extends JavaPlugin {
 

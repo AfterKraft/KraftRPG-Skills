@@ -13,34 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.afterkraft.kraftrpg.bundled;
+package com.afterkraft.kraftrpg.bundled.skills;
+
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
 import com.afterkraft.kraftrpg.api.RPGPlugin;
+import com.afterkraft.kraftrpg.api.entity.IEntity;
 import com.afterkraft.kraftrpg.api.entity.SkillCaster;
-import com.afterkraft.kraftrpg.api.skills.ActiveSkill;
+import com.afterkraft.kraftrpg.api.skills.Skill;
 import com.afterkraft.kraftrpg.api.skills.SkillCastResult;
 import com.afterkraft.kraftrpg.api.skills.SkillSetting;
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
+import com.afterkraft.kraftrpg.api.skills.TargetedSkill;
 
-import java.util.Collection;
-import java.util.EnumSet;
 
-public class SkillBandage extends ActiveSkill {
-    public SkillBandage(RPGPlugin plugin) {
-        super(plugin, "Bandage");
-        setDefault(SkillSetting.HEALING, 1.0D);
-        setDefault(SkillSetting.REAGENT, new ItemStack(Material.PAPER));
+public class SkillHarm extends TargetedSkill<LivingEntity> {
+    public SkillHarm(RPGPlugin plugin) {
+        super(plugin, "Harm", LivingEntity.class, 10);
+        setDefault(SkillSetting.DAMAGE, 10);
     }
 
     @Override
-    public Collection<SkillSetting> getUsedConfigNodes() {
-        return EnumSet.of(SkillSetting.REAGENT, SkillSetting.HEALING);
-    }
-
-    @Override
-    public SkillCastResult useSkill(SkillCaster caster) {
-        caster.setHealth(caster.getHealth() + plugin.getSkillConfigManager().getUseSetting(caster, this, SkillSetting.HEALING, 1.0, false));
+    public SkillCastResult useSkill(SkillCaster caster, IEntity target, LivingEntity entity) {
+        double damage = this.plugin.getSkillConfigManager().getUsedDoubleSetting(caster, this, SkillSetting.DAMAGE);
+        Skill.damageEntity(entity, caster, damage, DamageCause.MAGIC);
         return SkillCastResult.NORMAL;
     }
 }
