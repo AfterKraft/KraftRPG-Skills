@@ -15,6 +15,7 @@ import com.afterkraft.kraftrpg.api.entity.SkillCaster;
 import com.afterkraft.kraftrpg.api.skills.Skill;
 import com.afterkraft.kraftrpg.api.skills.SkillCastResult;
 import com.afterkraft.kraftrpg.api.skills.SkillSetting;
+import com.afterkraft.kraftrpg.api.skills.SkillType;
 import com.afterkraft.kraftrpg.api.skills.TargetedSkill;
 import com.afterkraft.kraftrpg.bundled.CustomSkillSettings;
 
@@ -26,6 +27,8 @@ public class SkillMegabolt extends TargetedSkill<LivingEntity> {
         setDefault(SkillSetting.RADIUS, 10);
         setDefault(SkillSetting.REAGENT, new ItemStack(Material.SULPHUR));
         setDefault(CustomSkillSettings.LIGHTNING_VOLUME, 1.0F);
+        setDescription("Strikes down lightning strikes at the targeted entity dealing damage and striking down entities near the target.");
+        setSkillTypes(SkillType.DAMAGING, SkillType.ABILITY_PROPERTY_LIGHTNING, SkillType.AREA_OF_EFFECT, SkillType.AGGRESSIVE);
     }
 
     @Override
