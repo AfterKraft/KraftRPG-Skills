@@ -23,22 +23,42 @@
  */
 package com.afterkraft.kraftrpg.bundled;
 
+import com.afterkraft.kraftrpg.bundled.skills.*;
+
+import org.bukkit.configuration.Configuration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.afterkraft.kraftrpg.api.ExternalProviderRegistration;
 import com.afterkraft.kraftrpg.api.RPGPlugin;
-import com.afterkraft.kraftrpg.bundled.skills.SkillBandage;
-import com.afterkraft.kraftrpg.bundled.skills.SkillHarm;
-import com.afterkraft.kraftrpg.bundled.skills.SkillPlanter;
 
+/**
+ * Stuff
+ */
 public class BundledSkillsPlugin extends JavaPlugin {
 
     @Override
     public void onLoad() {
         RPGPlugin plugin = ExternalProviderRegistration.getPlugin();
+        this.saveDefaultConfig();
 
-        ExternalProviderRegistration.registerSkill(new SkillBandage(plugin));
-        ExternalProviderRegistration.registerSkill(new SkillHarm(plugin));
-        ExternalProviderRegistration.registerSkill(new SkillPlanter(plugin));
+        Configuration configuration = getConfig();
+        if (configuration.getBoolean("enabled-skills.bandage")) {
+            ExternalProviderRegistration.registerSkill(new SkillBandage(plugin));
+        }
+        if (configuration.getBoolean("enabled-skills.ender_arrow")) {
+            ExternalProviderRegistration.registerSkill(new SkillEnderArrow(plugin));
+        }
+        if (configuration.getBoolean("enabled-skills.harm")) {
+            ExternalProviderRegistration.registerSkill(new SkillHarm(plugin));
+        }
+        if (configuration.getBoolean("enabled-skills.planter")) {
+            ExternalProviderRegistration.registerSkill(new SkillPlanter(plugin));
+        }
+        if (configuration.getBoolean("enabled-skills.megabolt")) {
+            ExternalProviderRegistration.registerSkill(new SkillMegabolt(plugin));
+        }
+        if (configuration.getBoolean("enabled-skills.bolt")) {
+            ExternalProviderRegistration.registerSkill(new SkillBolt(plugin));
+        }
     }
 }

@@ -96,10 +96,6 @@
                     <groupId>net.milkbowl.vault</groupId>
                     <artifactId>Vault</artifactId>
                 </exclusion>
-                <exclusion>
-                    <groupId>com.afterkraft.storage</groupId>
-                    <artifactId>KraftStorage</artifactId>
-                </exclusion>
             </exclusions>
             <scope>provided</scope>
         </dependency>

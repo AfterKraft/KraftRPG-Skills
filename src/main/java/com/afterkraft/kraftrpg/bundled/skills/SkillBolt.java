@@ -23,73 +23,59 @@
  */
 package com.afterkraft.kraftrpg.bundled.skills;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import com.google.common.collect.ImmutableMap;
-
 import org.bukkit.Material;
 import org.bukkit.Sound;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.inventory.ItemStack;
+
+import com.google.common.collect.ImmutableMap;
 
 import com.afterkraft.kraftrpg.api.RPGPlugin;
 import com.afterkraft.kraftrpg.api.entity.IEntity;
 import com.afterkraft.kraftrpg.api.entity.Insentient;
 import com.afterkraft.kraftrpg.api.entity.SkillCaster;
 import com.afterkraft.kraftrpg.api.events.entity.damage.InsentientDamageEvent.DamageType;
-import com.afterkraft.kraftrpg.api.skills.Skill;
 import com.afterkraft.kraftrpg.api.skills.SkillCastResult;
 import com.afterkraft.kraftrpg.api.skills.SkillSetting;
 import com.afterkraft.kraftrpg.api.skills.SkillType;
 import com.afterkraft.kraftrpg.api.skills.TargetedSkill;
 import com.afterkraft.kraftrpg.bundled.CustomSkillSettings;
 
-public class SkillMegabolt extends TargetedSkill<LivingEntity> {
-    public SkillMegabolt(RPGPlugin plugin) {
+/**
+ * Standard Bolt that targets a LivingEntity
+ */
+public class SkillBolt extends TargetedSkill<LivingEntity> {
+    public SkillBolt(RPGPlugin plugin) {
         super(plugin, "MegaBolt", LivingEntity.class, 20);
         setDefault(SkillSetting.MAX_DISTANCE, 20);
         setDefault(SkillSetting.DAMAGE, 100, 10);
-        setDefault(SkillSetting.RADIUS, 10);
         setDefault(SkillSetting.REAGENT, new ItemStack(Material.SULPHUR));
         setDefault(CustomSkillSettings.LIGHTNING_VOLUME, 1.0F);
-        setDescription("Strikes down lightning strikes at the targeted entity dealing damage and striking down entities near the target.");
-        setSkillTypes(SkillType.DAMAGING, SkillType.ABILITY_PROPERTY_LIGHTNING, SkillType.AREA_OF_EFFECT, SkillType.AGGRESSIVE);
+        setDescription(
+                "Strikes down lightning strikes at the targeted entity dealing "
+                        + "damage and striking down entities near the target.");
+        setSkillTypes(SkillType.DAMAGING, SkillType.ABILITY_PROPERTY_LIGHTNING,
+                SkillType.AREA_OF_EFFECT, SkillType.AGGRESSIVE);
     }
 
     @Override
-    public SkillCastResult useSkill(SkillCaster caster, IEntity target, LivingEntity entity) {
-        int radius = this.plugin.getSkillConfigManager().getUsedIntSetting(caster, this, SkillSetting.RADIUS);
-        double damage = this.plugin.getSkillConfigManager().getUsedDoubleSetting(caster, this, SkillSetting.DAMAGE);
-        double damageIncrease = this.plugin.getSkillConfigManager().getUsedDoubleSetting(caster, this, SkillSetting.DAMAGE.scalingNode());
+    public SkillCastResult useSkill(final SkillCaster caster, final IEntity target,
+                                    final LivingEntity entity) {
+        double damage = this.plugin.getSkillConfigManager()
+                .getUsedDoubleSetting(caster, this, SkillSetting.DAMAGE);
+        double damageIncrease = this.plugin.getSkillConfigManager()
+                .getUsedDoubleSetting(caster, this, SkillSetting.DAMAGE.scalingNode());
         damage += (damageIncrease * caster.getLevel(caster.getPrimaryRole()));
 
-        float volume = (float) this.plugin.getSkillConfigManager().getUsedDoubleSetting(caster, this, CustomSkillSettings.LIGHTNING_VOLUME);
+        float volume = (float) this.plugin.getSkillConfigManager()
+                .getUsedDoubleSetting(caster, this, CustomSkillSettings.LIGHTNING_VOLUME);
         target.getWorld().strikeLightning(target.getLocation());
         target.getWorld().playSound(target.getLocation(), Sound.AMBIENCE_THUNDER, volume, 1.0F);
 
-        Skill.damageEntity((Insentient) target, caster, this, ImmutableMap.of(DamageType.MAGICAL, damage), DamageCause.MAGIC);
-
-        List<Entity> entities = target.getNearbyEntities(radius, radius, radius);
-        for (Entity nearbyEntity : entities) {
-            if (!(nearbyEntity instanceof LivingEntity)) {
-                continue;
-            }
-            LivingEntity nearbyLivingEntity = (LivingEntity) nearbyEntity;
-            Insentient insentient = (Insentient) this.plugin.getEntityManager().getEntity(nearbyLivingEntity);
-            if (!damageCheck(caster, nearbyLivingEntity)) {
-                continue;
-            }
-
-            nearbyLivingEntity.getWorld().strikeLightning(nearbyLivingEntity.getLocation());
-            nearbyLivingEntity.getWorld().playSound(nearbyLivingEntity.getLocation(), Sound.AMBIENCE_THUNDER, volume, 1.0F);
-            addSkillTarget(nearbyEntity, caster);
-            Skill.damageEntity(insentient, caster, this, ImmutableMap.of(DamageType.MAGICAL, damage), DamageCause.MAGIC);
-        }
-
-        return null;
+        addSkillTarget(entity, caster);
+        damageEntity((Insentient) target, caster, this, ImmutableMap.of(DamageType.MAGICAL,
+                damage), DamageCause.MAGIC);
+        return SkillCastResult.NORMAL;
     }
 }

@@ -21,21 +21,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.afterkraft.kraftrpg.bundled;
+package com.afterkraft.kraftrpg.bundled.utils;
 
-import com.afterkraft.kraftrpg.api.skills.SkillSetting;
+import org.bukkit.FireworkEffect;
+import org.bukkit.Location;
+import org.bukkit.entity.Firework;
+import org.bukkit.inventory.meta.FireworkMeta;
 
-public class CustomSkillSettings extends SkillSetting {
+public final class FireworksUtil {
 
-    public static final CustomSkillSettings PLANT_RADIUS = new CustomSkillSettings("plant-radius");
-    public static final CustomSkillSettings LIGHTNING_VOLUME =
-            new CustomSkillSettings("lightning-volume");
-
-    protected CustomSkillSettings(String node) {
-        super(node);
+    public static void playFireworkEffect(final Location location, final FireworkEffect effect) {
+        Firework firework = location.getWorld().spawn(location, Firework.class);
+        FireworkMeta meta = firework.getFireworkMeta();
+        meta.setPower(1);
+        meta.addEffect(effect);
+        firework.detonate();
     }
 
-    protected CustomSkillSettings(String node, boolean scaled) {
-        super(node, scaled);
-    }
 }
